@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infografía Perceptrón</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #444;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .activation {
+      text-align: center;
+    }
+    .activation img {
+      max-width: 180px;
+      margin-top: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Infografía: Implementación de un Perceptrón</h1>
+    <p>Python · C# · Java · JavaScript — Funciones de activación y casos de prueba</p>
+  </header>
+
+  <section>
+    <div class="card">
+      <h2>¿Qué es un Perceptrón?</h2>
+      <p>
+        El perceptrón es la unidad más básica de una red neuronal artificial.
+        Recibe <strong>entradas (x₁, x₂, ... xn)</strong> con pesos <strong>w</strong>,
+        suma los valores y aplica una <strong>función de activación</strong> para
+        producir una salida (0 o 1 en clasificación binaria).
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Funciones de Activación</h2>
+      <div class="grid">
+        <div class="activation">
+          <h3>Escalón</h3>
+          <p>Salida 0/1 según un umbral.</p>
+        </div>
+        <div class="activation">
+          <h3>Lineal</h3>
+          <p>Devuelve directamente z.</p>
+        </div>
+        <div class="activation">
+          <h3>Sigmoidal</h3>
+          <p>Suaviza entre 0 y 1.</p>
+        </div>
+        <div class="activation">
+          <h3>Tangente Hiperbólica</h3>
+          <p>Salida entre -1 y 1.</p>
+        </div>
+        <div class="activation">
+          <h3>ReLU</h3>
+          <p>z si z>0, si no 0.</p>
+        </div>
+        <div class="activation">
+          <h3>Softmax</h3>
+          <p>Normaliza salidas en probabilidades.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Casos de Prueba</h2>
+      <ul>
+        <li><strong>AND lógico:</strong> salida 1 solo si ambas entradas son 1.</li>
+        <li><strong>OR lógico:</strong> salida 1 si al menos una entrada es 1.</li>
+        <li><strong>Spam:</strong> clasificación de correos en spam o no spam.</li>
+        <li><strong>Clima:</strong> predicción de lluvia a partir de variables meteorológicas.</li>
+        <li><strong>Fraude:</strong> detección de transacciones sospechosas.</li>
+        <li><strong>Riesgo académico:</strong> detección de alumnos en riesgo.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Resultados (ejemplo)</h2>
+      <p>Accuracy alcanzado en las pruebas:</p>
+      <ul>
+        <li>AND: 100% con Step, Tanh, ReLU</li>
+        <li>OR: 100% con Step, Tanh, ReLU</li>
+        <li>Spam: ~89% con Sigmoid/Softmax</li>
+        <li>Clima: ~84% con Step/Softmax</li>
+        <li>Fraude: ~89% con Step/Sigmoid (tras corrección numérica)</li>
+        <li>Riesgo: ~97% con Sigmoid/Softmax</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p>Proyecto académico · Inteligencia Artificial · 2025</p>
+  </footer>
+</body>
+</html>
