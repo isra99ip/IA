@@ -3,156 +3,342 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Infografía: Perceptrón desde cero</title>
+<title>Perceptrón desde Cero · Infografía interactiva</title>
 <style>
 :root{
   --bg:#f6f7fb; --card:#ffffff; --text:#23262f; --muted:#5b6170;
   --brand1:#667eea; --brand2:#764ba2; --accent:#e63946; --ok:#2a9d8f; --warn:#e9c46a;
   --line:#e2e6ef;
 }
-body{margin:0;font-family:Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,var(--brand1),var(--brand2));color:white;padding:2rem 1rem;text-align:center;position:sticky;top:0;z-index:5}
-header h1{margin:0;font-size:clamp(1.6rem,4vw,2.6rem)}
-nav{margin-top:1rem}
-nav a{color:white;text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:.3rem .7rem;border-radius:999px;margin:.2rem;display:inline-block;font-size:.9rem}
-.container{max-width:1100px;margin:auto;padding:1.5rem}
-.card{background:var(--card);border-radius:14px;padding:1.5rem;margin:1rem 0;box-shadow:0 4px 14px rgba(0,0,0,.08);border:1px solid var(--line)}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--brand1),var(--brand2));color:white;padding:2.5rem 1rem;text-align:center;position:sticky;top:0;z-index:8}
+h1{margin:0 0 .25rem 0;font-size:clamp(1.8rem,3.5vw,2.6rem)}
+.sub{opacity:.9}
+nav.top{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem}
+nav.top a{color:white;border:1px solid rgba(255,255,255,.4);padding:.35rem .6rem;border-radius:999px;text-decoration:none;font-size:.94rem;backdrop-filter:blur(4px)}
+.container{max-width:1140px;margin:auto;padding:2rem 1rem}
+.card{background:var(--card);border-radius:14px;padding:1.25rem 1.25rem;margin:1rem 0;box-shadow:0 6px 24px rgba(0,0,0,.06);border:1px solid var(--line)}
 .card h2{margin-top:0}
-.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.95rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.center{text-align:center}
+small.muted{color:var(--muted)}
+svg{display:block;margin:auto;max-width:100%}
+.tag{display:inline-block;background:#eef1ff;color:#3949ab;padding:.15rem .5rem;border-radius:6px;font-size:.85rem;margin:.15rem .35rem .15rem 0}
+.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .5rem;border-radius:999px;font-size:.8rem;background:#eef6f4;color:#1f7a6b;border:1px solid #cfeae5;margin-right:.35rem}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:#f1f2f6;border:1px solid #d7d9e0;padding:0 .35rem;border-radius:4px}
+code{background:#f5f7fb;border:1px solid var(--line);padding:.15rem .35rem;border-radius:6px}
+table{width:100%;border-collapse:collapse;margin-top:.5rem;font-size:.95rem}
 th,td{border:1px solid var(--line);padding:.6rem;text-align:center}
 th{background:#eef1ff}
-footer{margin:2rem 0;text-align:center;opacity:.7}
-.toggle{position:fixed;bottom:14px;right:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.08);padding:.4rem .8rem;display:flex;align-items:center;gap:.5rem}
-.toggle input{accent-color:var(--brand1)}
-.dark{--bg:#0f1218;--card:#151a23;--text:#e9edf6;--muted:#9aa3b2;--line:#262b36}
+.rowok{background:#f7fbff}
+.rowwarn{background:#fffaf0}
+dl{display:grid;grid-template-columns: 220px 1fr;gap:.5rem 1rem}
+dt{font-weight:700}
+details{border:1px dashed var(--line);border-radius:10px;padding:.75rem 1rem}
+details summary{cursor:pointer;font-weight:600}
+.footer{margin:2rem auto 3rem;opacity:.8;text-align:center}
+
+/* Dark mode */
+.dark{--bg:#0f1218; --card:#151a23; --text:#e9edf6; --muted:#9aa3b2; --line:#262b36;}
+.dark header{box-shadow:0 1px 0 rgba(255,255,255,.06) inset}
+.dark nav.top a{border-color:rgba(255,255,255,.25)}
 .dark th{background:#1d2346}
-.dark nav a{border-color:rgba(255,255,255,.3)}
-.dark code{background:#151a23;color:#f5f5f5}
-code{background:#f5f5f5;padding:.15rem .3rem;border-radius:6px}
+.dark .tag{background:#1d2346;color:#cbd3ff}
+.dark .kbd{background:#1b2130;border-color:#2a3140}
+.dark .badge{background:#13332f;border-color:#1f514a;color:#a5e5da}
+.dark code{background:#151a23}
+
+/* Toggle botón */
+.toggle{
+  position:fixed;right:14px;bottom:14px;background:var(--card);border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,.08);border-radius:999px;padding:.4rem .75rem;display:flex;gap:.5rem;align-items:center;z-index:9
+}
+.toggle input{accent-color:var(--brand1)}
 </style>
 </head>
 <body>
 <header>
-  <h1>Perceptrón desde cero</h1>
-  <p>Python · C# · Java · JavaScript — Funciones de activación, pipeline y resultados</p>
-  <nav>
+  <h1>Perceptrón desde Cero · Proyecto Académico</h1>
+  <div class="sub">Python · C# · Java · JavaScript — Teoría, Pipeline, Activaciones, Resultados y Código</div>
+  <nav class="top">
+    <a href="#neurona">Neurona</a>
     <a href="#pipeline">Pipeline</a>
-    <a href="#resultados">Resultados</a>
+    <a href="#activaciones">Activaciones (con ejes)</a>
+    <a href="#resultados">Resultados reales</a>
     <a href="#implementacion">Implementación</a>
     <a href="#diccionario">Diccionario</a>
+    <a href="#reproducir">Reproducir</a>
   </nav>
 </header>
 
 <div class="container">
 
-<section id="pipeline" class="card">
-  <h2>Pipeline: ¿Cómo funciona un perceptrón?</h2>
-  <svg viewBox="0 0 1100 140" width="100%" aria-label="Pipeline perceptrón">
-    <defs>
-      <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-        <path d="M0,0 L0,6 L6,3 z" fill="#333"/>
-      </marker>
-    </defs>
-    <g font-size="14">
-      <rect x="10"  y="30" width="160" height="70" rx="10" fill="#eef1ff" stroke="#3949ab"/>
-      <text x="90" y="70" text-anchor="middle">Datos (CSV)</text>
+  <!-- NEURONA -->
+  <section id="neurona" class="card">
+    <h2>¿Qué es un perceptrón?</h2>
+    <p>
+      Una <strong>neurona artificial</strong> suma entradas <em>x</em> con pesos <em>w</em>, agrega un sesgo <em>b</em> y aplica una <strong>función de activación</strong>.
+      Es un modelo clásico (70–80 años en academia) y base para redes neuronales modernas.
+      <span class="tag">Supervisado</span><span class="tag">Clasificación binaria</span><span class="tag">Regresión (lineal)</span>
+    </p>
+    <!-- Diagrama neurona -->
+    <svg viewBox="0 0 560 220" width="800" aria-label="Neurona artificial">
+      <!-- Inputs -->
+      <circle cx="60" cy="50" r="18" fill="#667eea" stroke="black"/><text x="60" y="55" text-anchor="middle" fill="white" font-size="12">x₁</text>
+      <circle cx="60" cy="110" r="18" fill="#667eea" stroke="black"/><text x="60" y="115" text-anchor="middle" fill="white" font-size="12">x₂</text>
+      <circle cx="60" cy="170" r="18" fill="#667eea" stroke="black"/><text x="60" y="175" text-anchor="middle" fill="white" font-size="12">x₃</text>
+      <!-- Nodo -->
+      <circle cx="260" cy="110" r="50" fill="#764ba2" stroke="black"/><text x="260" y="115" text-anchor="middle" fill="white" font-size="14">z=Σ w·x+b</text>
+      <rect x="230" y="30" width="60" height="22" rx="6" fill="#fff" stroke="#333"/>
+      <text x="260" y="45" text-anchor="middle" font-size="12">bias b</text>
+      <line x1="260" y1="52" x2="260" y2="60" stroke="#333"/>
+      <!-- Activación -->
+      <rect x="340" y="80" width="100" height="60" rx="10" fill="#fff7e6" stroke="#b08900"/>
+      <text x="390" y="115" text-anchor="middle" font-size="14">f(z)</text>
+      <!-- Salida -->
+      <circle cx="500" cy="110" r="18" fill="#e63946" stroke="black"/><text x="500" y="115" text-anchor="middle" fill="white" font-size="12">y</text>
+      <!-- Flechas -->
+      <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="black"/></marker></defs>
+      <line x1="78" y1="50" x2="210" y2="90" stroke="black" marker-end="url(#arr)"/>
+      <line x1="78" y1="110" x2="210" y2="110" stroke="black" marker-end="url(#arr)"/>
+      <line x1="78" y1="170" x2="210" y2="130" stroke="black" marker-end="url(#arr)"/>
+      <line x1="310" y1="110" x2="340" y2="110" stroke="black" marker-end="url(#arr)"/>
+      <line x1="440" y1="110" x2="482" y2="110" stroke="black" marker-end="url(#arr)"/>
+      <!-- Pesos -->
+      <text x="150" y="70" font-size="12">w₁</text>
+      <text x="150" y="112" font-size="12">w₂</text>
+      <text x="150" y="152" font-size="12">w₃</text>
+    </svg>
+    <small class="muted">Ecuación: <code>y = f(w·x + b)</code>. Para binario, umbral 0.5 o softmax (2 salidas).</small>
+  </section>
 
-      <rect x="210" y="30" width="200" height="70" rx="10" fill="#e8fff8" stroke="#1f7a6b"/>
-      <text x="310" y="60" text-anchor="middle">Normalización</text>
-      <text x="310" y="80" text-anchor="middle" font-size="12">MinMax / limpieza</text>
+  <!-- PIPELINE -->
+  <section id="pipeline" class="card">
+    <h2>Pipeline completo</h2>
+    <svg viewBox="0 0 1140 160" width="100%" aria-label="Pipeline">
+      <defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#333"/></marker></defs>
+      <g font-size="14">
+        <rect x="10"  y="40" width="170" height="80" rx="12" fill="#eef1ff" stroke="#3949ab"/><text x="95" y="80" text-anchor="middle">Datos (CSV)</text>
+        <rect x="210" y="40" width="210" height="80" rx="12" fill="#e8fff8" stroke="#1f7a6b"/><text x="315" y="70" text-anchor="middle">Preprocesamiento</text><text x="315" y="92" text-anchor="middle" font-size="12">MinMax, limpieza</text>
+        <rect x="450" y="40" width="220" height="80" rx="12" fill="#fdece7" stroke="#c44536"/><text x="560" y="70" text-anchor="middle">Perceptrón</text><text x="560" y="92" text-anchor="middle" font-size="12">w, b, lr, epochs</text>
+        <rect x="700" y="40" width="180" height="80" rx="12" fill="#fff7e6" stroke="#b08900"/><text x="790" y="70" text-anchor="middle">Activación</text><text x="790" y="92" text-anchor="middle" font-size="12">step/sigmoid/tanh/ReLU/softmax</text>
+        <rect x="910" y="40" width="210" height="80" rx="12" fill="#f0f7ff" stroke="#0b62b4"/><text x="1015" y="70" text-anchor="middle">Métrica</text><text x="1015" y="92" text-anchor="middle" font-size="12">accuracy</text>
+        <line x1="180" y1="80" x2="210" y2="80" stroke="#333" marker-end="url(#arr2)"/>
+        <line x1="420" y1="80" x2="450" y2="80" stroke="#333" marker-end="url(#arr2)"/>
+        <line x1="670" y1="80" x2="700" y2="80" stroke="#333" marker-end="url(#arr2)"/>
+        <line x1="880" y1="80" x2="910" y2="80" stroke="#333" marker-end="url(#arr2)"/>
+      </g>
+    </svg>
+    <details style="margin-top:.75rem"><summary>Tips prácticos</summary>
+      <ul>
+        <li>Si una variable domina (ej. <code>monto</code>), normaliza o divide por una constante.</li>
+        <li>Si oscila, baja <code>lr</code> a 0.05/0.01 o sube <code>epochs</code> a 30–50.</li>
+        <li>Para sigmoide, usa la versión estable (corregimos el overflow de <code>exp()</code>).</li>
+      </ul>
+    </details>
+  </section>
 
-      <rect x="450" y="30" width="210" height="70" rx="10" fill="#fdece7" stroke="#c44536"/>
-      <text x="555" y="60" text-anchor="middle">Perceptrón</text>
-      <text x="555" y="80" text-anchor="middle" font-size="12">Σ (w·x+b)</text>
+  <!-- ACTIVACIONES CON EJES -->
+  <section id="activaciones" class="card">
+    <h2>Funciones de activación (con ejes X/Y)</h2>
+    <p>Graficadas en 2D. Eje X = entrada <em>z</em>, Eje Y = <em>f(z)</em>. Incluyo ReLU y Leaky ReLU para contrastar.</p>
+    <div class="grid">
+      <!-- Escalón -->
+      <div class="center">
+        <h3>Escalón (Heaviside)</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="Escalón">
+          <!-- Ejes -->
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <!-- Línea -->
+          <polyline points="20,160 130,160 130,40 240,40" stroke="#2b6cb0" stroke-width="3" fill="none"/>
+          <!-- Ticks -->
+          <text x="126" y="115" font-size="10">0</text>
+          <text x="108" y="166" font-size="10">0</text>
+          <text x="112" y="44" font-size="10">1</text>
+        </svg>
+      </div>
+      <!-- Lineal -->
+      <div class="center">
+        <h3>Lineal</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="Lineal">
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <line x1="20" y1="160" x2="240" y2="40" stroke="#444" stroke-width="3"/>
+          <text x="126" y="115" font-size="10">0</text>
+        </svg>
+      </div>
+      <!-- Sigmoide -->
+      <div class="center">
+        <h3>Sigmoide</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="Sigmoid">
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <!-- curva aproximada -->
+          <path d="M20,160 C80,160 110,120 130,100 C150,80 180,40 240,40" stroke="#2f855a" stroke-width="3" fill="none"/>
+          <text x="108" y="166" font-size="10">0</text><text x="112" y="44" font-size="10">1</text>
+          <text x="126" y="115" font-size="10">0</text>
+        </svg>
+      </div>
+      <!-- Tanh -->
+      <div class="center">
+        <h3>Tangente hiperbólica</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="Tanh">
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <path d="M20,160 C90,80 170,120 240,40" stroke="#805ad5" stroke-width="3" fill="none"/>
+          <text x="126" y="115" font-size="10">0</text><text x="112" y="44" font-size="10">1</text><text x="112" y="166" font-size="10">-1</text>
+        </svg>
+      </div>
+      <!-- ReLU -->
+      <div class="center">
+        <h3>ReLU</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="ReLU">
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <polyline points="20,160 130,160 240,40" stroke="#e53e3e" stroke-width="3" fill="none"/>
+          <text x="126" y="115" font-size="10">0</text><text x="108" y="166" font-size="10">0</text>
+        </svg>
+      </div>
+      <!-- Leaky ReLU -->
+      <div class="center">
+        <h3>Leaky ReLU (α=0.1)</h3>
+        <svg viewBox="0 0 260 200" width="100%" aria-label="Leaky ReLU">
+          <line x1="20" y1="100" x2="240" y2="100" stroke="#333"/><text x="244" y="104">x</text>
+          <line x1="130" y1="180" x2="130" y2="20" stroke="#333"/><text x="134" y="24">y</text>
+          <!-- tramo negativo con pendiente pequeña -->
+          <polyline points="20,176 130,160 240,40" stroke="#ef7d10" stroke-width="3" fill="none"/>
+          <text x="126" y="115" font-size="10">0</text><text x="108" y="166" font-size="10">0</text>
+        </svg>
+        <small class="muted">Evita el “neurona muerta” de ReLU: para x&lt;0 deja pasar un poco (αx).</small>
+      </div>
+    </div>
+  </section>
 
-      <rect x="700" y="30" width="170" height="70" rx="10" fill="#fff7e6" stroke="#b08900"/>
-      <text x="785" y="60" text-anchor="middle">Activación</text>
-      <text x="785" y="80" text-anchor="middle" font-size="12">sigmoid / tanh / ReLU</text>
+  <!-- RESULTADOS -->
+  <section id="resultados" class="card">
+    <h2>Resultados (accuracy) — ejecutados en tu entorno</h2>
+    <p>
+      <span class="badge">epochs = 20</span>
+      <span class="badge">lr = 0.1 (por defecto)</span>
+      <span class="badge">datasets sintéticos</span>
+    </p>
+    <table>
+      <thead>
+        <tr><th>Caso</th><th>step</th><th>linear</th><th>sigmoid</th><th>tanh</th><th>relu</th><th>softmax</th></tr>
+      </thead>
+      <tbody>
+        <tr class="rowok"><td><strong>AND</strong></td><td>1.000</td><td>1.000</td><td>0.500</td><td>1.000</td><td>1.000</td><td>1.000</td></tr>
+        <tr class="rowok"><td><strong>OR</strong></td><td>1.000</td><td>1.000</td><td>0.750</td><td>1.000</td><td>1.000</td><td>0.750</td></tr>
+        <tr><td><strong>Spam</strong></td><td>0.893</td><td>0.107</td><td>0.893</td><td>0.893</td><td>0.107</td><td>0.900</td></tr>
+        <tr><td><strong>Clima</strong></td><td>0.800</td><td>0.200</td><td>0.200</td><td>0.200</td><td>0.200</td><td>0.800</td></tr>
+        <tr><td><strong>Fraude</strong></td><td>0.867</td><td>0.133</td><td>0.133</td><td>0.133</td><td>0.133</td><td>0.867</td></tr>
+        <tr class="rowok"><td><strong>Riesgo</strong></td><td>0.953</td><td>0.600</td><td>0.980</td><td>0.600</td><td>0.400</td><td>0.967</td></tr>
+      </tbody>
+    </table>
+    <details style="margin-top:.8rem"><summary>Lectura rápida</summary>
+      <ul>
+        <li><strong>AND/OR:</strong> separables → step/ReLU llegan a 1.0; sigmoid/softmax a veces necesitan más épocas.</li>
+        <li><strong>Spam:</strong> señal lineal clara → sigmoid/tanh/softmax altos.</li>
+        <li><strong>Clima:</strong> frontera tipo umbral → step/softmax destacan.</li>
+        <li><strong>Fraude:</strong> variable <em>monto</em> grande → normalizar/bajar lr ayuda a activaciones suaves.</li>
+        <li><strong>Riesgo:</strong> combinación de señales tabulares → sigmoid/softmax brillan.</li>
+      </ul>
+    </details>
+  </section>
 
-      <rect x="900" y="30" width="180" height="70" rx="10" fill="#f0f7ff" stroke="#0b62b4"/>
-      <text x="990" y="60" text-anchor="middle">Salida</text>
-      <text x="990" y="80" text-anchor="middle" font-size="12">0/1 o prob.</text>
+  <!-- IMPLEMENTACIÓN -->
+  <section id="implementacion" class="card">
+    <h2>Implementación en 4 lenguajes (desde cero)</h2>
+    <div class="grid">
+      <div>
+        <h3>Forward</h3>
+        <pre><code>z = w·x + b
+y = f(z)               # step, linear, sigmoid, tanh, ReLU
+p = softmax([z0,z1])   # binario con 2 salidas</code></pre>
+      </div>
+      <div>
+        <h3>Regla de actualización</h3>
+        <pre><code># activaciones derivables
+grad = (t - y) * f'(z)
+w_j += lr * grad * x_j
+b   += lr * grad
 
-      <line x1="170" y1="65" x2="210" y2="65" stroke="#333" marker-end="url(#arr)"/>
-      <line x1="410" y1="65" x2="450" y2="65" stroke="#333" marker-end="url(#arr)"/>
-      <line x1="660" y1="65" x2="700" y2="65" stroke="#333" marker-end="url(#arr)"/>
-      <line x1="870" y1="65" x2="900" y2="65" stroke="#333" marker-end="url(#arr)"/>
-    </g>
-  </svg>
-  <p><strong>Idea central:</strong> el perceptrón ajusta sus pesos con un <code>learning rate (lr)</code> durante varias <code>epochs</code>, buscando minimizar el error en la clasificación.</p>
-</section>
+# perceptrón clásico (step)
+if (t != y):
+  w_j += lr * (t - y) * x_j
+  b   += lr * (t - y)</code></pre>
+      </div>
+      <div>
+        <h3>Softmax + Entropía Cruzada</h3>
+        <pre><code>z = [w0·x + b0, w1·x + b1]
+p = softmax(z)
+grad_k = p_k - target_k
+w_kj  -= lr * grad_k * x_j
+b_k   -= lr * grad_k</code></pre>
+      </div>
+    </div>
+    <small class="muted">Incluye sigmoide estable (evita overflow), tanh de la librería estándar y clipping opcional de pesos.</small>
+  </section>
 
-<section id="resultados" class="card">
-  <h2>Resultados de los experimentos</h2>
-  <table>
-    <tr>
-      <th>Caso</th><th>step</th><th>linear</th><th>sigmoid</th><th>tanh</th><th>relu</th><th>softmax</th>
-    </tr>
-    <tr><td>AND</td><td>1.000</td><td>1.000</td><td>0.500</td><td>1.000</td><td>1.000</td><td>1.000</td></tr>
-    <tr><td>OR</td><td>1.000</td><td>1.000</td><td>0.750</td><td>1.000</td><td>1.000</td><td>0.750</td></tr>
-    <tr><td>Spam</td><td>0.893</td><td>0.107</td><td>0.893</td><td>0.893</td><td>0.107</td><td>0.900</td></tr>
-    <tr><td>Clima</td><td>0.800</td><td>0.200</td><td>0.200</td><td>0.200</td><td>0.200</td><td>0.800</td></tr>
-    <tr><td>Fraude</td><td>0.867</td><td>0.133</td><td>0.133</td><td>0.133</td><td>0.133</td><td>0.867</td></tr>
-    <tr><td>Riesgo</td><td>0.953</td><td>0.600</td><td>0.980</td><td>0.600</td><td>0.400</td><td>0.967</td></tr>
-  </table>
-  <p><small>Estos resultados corresponden a tu ejecución en consola con <code>python3 run_experiments.py</code>.</small></p>
-</section>
+  <!-- DICCIONARIO -->
+  <section id="diccionario" class="card">
+    <h2>Diccionario de conceptos</h2>
+    <dl>
+      <dt>Entradas (x)</dt><dd>Características que describen un ejemplo (p. ej., <em>free_count</em>, <em>humedad</em>, <em>monto</em>).</dd>
+      <dt>Pesos (w)</dt><dd>Importancia de cada entrada en la decisión.</dd>
+      <dt>Bias (b)</dt><dd>Desplaza la activación (ajusta el umbral efectivo).</dd>
+      <dt>Activación</dt><dd>Función no lineal que decide la salida (step, sigmoid, tanh, ReLU, softmax).</dd>
+      <dt>Epoch</dt><dd>Una pasada completa por el dataset de entrenamiento.</dd>
+      <dt>Learning rate (lr)</dt><dd>Tamaño del paso en el ajuste de pesos; muy alto puede divergir.</dd>
+      <dt>Sigmoide estable</dt><dd>Implementación numéricamente robusta que evita overflow en <code>exp()</code>.</dd>
+      <dt>Softmax</dt><dd>Convierte logits en probabilidades; en binario se usan 2 neuronas de salida.</dd>
+      <dt>Normalización</dt><dd>Escalar atributos a un rango comparable (Min–Max, z-score, división por constante).</dd>
+      <dt>Accuracy</dt><dd>Fracción de predicciones correctas sobre el total.</dd>
+    </dl>
+  </section>
 
-<section id="implementacion" class="card">
-  <h2>Implementación desde cero</h2>
-  <p>Código implementado en <strong>Python, C#, Java y JavaScript</strong> sin usar librerías de ML. Se incluyó:</p>
-  <ul>
-    <li>Funciones de activación: step, linear, sigmoid (estable), tanh, ReLU, softmax.</li>
-    <li>Entrenamiento online: ajuste de <em>pesos</em> y <em>bias</em> tras cada muestra.</li>
-    <li>Regla especial para <code>step</code> (perceptrón clásico).</li>
-    <li>Corrección de <strong>overflow numérico</strong> en la sigmoide.</li>
-    <li>Soporte de clipping para evitar explosiones en los pesos.</li>
-  </ul>
-</section>
+  <!-- REPRODUCIR -->
+  <section id="reproducir" class="card">
+    <h2>Cómo reproducir y presentar</h2>
+    <ol>
+      <li>Genera datasets: <code>python3 gen_datasets.py</code></li>
+      <li>Corre: <code>python3 run_experiments.py and.csv</code> (y así con cada CSV)</li>
+      <li>Anota accuracies en tu Excel / Paper; ajusta <span class="kbd">lr</span> y <span class="kbd">epochs</span> si es necesario.</li>
+      <li>Demostración corta en C#, Java y Node usando AND/OR para probar implementación multi-lenguaje.</li>
+    </ol>
+    <details><summary>Errores comunes</summary>
+      <ul>
+        <li><strong>Overflow en sigmoide</strong>: usa versión estable (incluida) y normaliza.</li>
+        <li><strong>Pesos oscilan</strong>: baja <code>lr</code> o activa clipping; aumenta <code>epochs</code>.</li>
+        <li><strong>Fronteras duras</strong>: step/softmax suelen ir mejor que activaciones suaves.</li>
+      </ul>
+    </details>
+  </section>
 
-<section id="diccionario" class="card">
-  <h2>Diccionario de conceptos</h2>
-  <dl>
-    <dt><strong>Perceptrón</strong></dt>
-    <dd>Modelo matemático de una neurona artificial: entradas → suma ponderada → activación → salida.</dd>
-    <dt><strong>Entradas (x)</strong></dt>
-    <dd>Los datos de entrada (ejemplo: temperatura, nota de alumno, palabra “gratis” en un correo).</dd>
-    <dt><strong>Pesos (w)</strong></dt>
-    <dd>Coeficientes que indican la importancia de cada entrada.</dd>
-    <dt><strong>Sesgo (bias)</strong></dt>
-    <dd>Constante que permite desplazar la función de activación, como un umbral flexible.</dd>
-    <dt><strong>Función de activación</strong></dt>
-    <dd>Transforma la suma ponderada en una salida. Ejemplos: step, sigmoid, ReLU.</dd>
-    <dt><strong>Epoch</strong></dt>
-    <dd>Una pasada completa sobre todos los datos de entrenamiento.</dd>
-    <dt><strong>Learning rate (lr)</strong></dt>
-    <dd>Tamaño del paso en el ajuste de los pesos. Un lr grande puede divergir, uno pequeño puede ser lento.</dd>
-    <dt><strong>Softmax</strong></dt>
-    <dd>Función que convierte una lista de valores en probabilidades que suman 1.</dd>
-    <dt><strong>Normalización</strong></dt>
-    <dd>Escalar los datos para que tengan valores comparables (ejemplo: monto dividido por 2000).</dd>
-    <dt><strong>Accuracy</strong></dt>
-    <dd>Porcentaje de aciertos en la clasificación.</dd>
-  </dl>
-</section>
-
+  <div class="footer">
+    <div>Inteligencia Artificial · 2025</div>
+    <div><small class="muted">Autor: Tu Nombre · GitHub Pages · Repositorio: <em>tu-usuario/perceptron</em></small></div>
+  </div>
 </div>
 
-<footer>
-  <p>Proyecto académico · Inteligencia Artificial · 2025</p>
-</footer>
-
+<!-- Toggle modo oscuro -->
 <div class="toggle">
   <label for="dark">🌙 Modo oscuro</label>
   <input id="dark" type="checkbox" />
 </div>
 
 <script>
-const root = document.documentElement;
+const c = document.documentElement;
 const chk = document.getElementById('dark');
-if(localStorage.getItem('dark')==='1'){root.classList.add('dark');chk.checked=true;}
-chk.addEventListener('change',()=>{root.classList.toggle('dark');localStorage.setItem('dark',root.classList.contains('dark')?'1':'0');});
+const key='prefers-dark';
+const saved = localStorage.getItem(key);
+if(saved==='1'){ c.classList.add('dark'); chk.checked=true; }
+chk.addEventListener('change', ()=>{
+  c.classList.toggle('dark');
+  localStorage.setItem(key, c.classList.contains('dark') ? '1':'0');
+});
 </script>
 </body>
 </html>
